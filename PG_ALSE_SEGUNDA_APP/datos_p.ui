@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>datos_p</class>
  <widget class="QWidget" name="datos_p">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -171,6 +174,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
   </widget>
   <widget class="QLineEdit" name="month_line">
    <property name="geometry">
@@ -181,6 +187,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
   </widget>
   <widget class="QLineEdit" name="year_line">
    <property name="geometry">
@@ -190,6 +199,9 @@
      <width>61</width>
      <height>32</height>
     </rect>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
    </property>
   </widget>
   <widget class="QPushButton" name="boton_validar">

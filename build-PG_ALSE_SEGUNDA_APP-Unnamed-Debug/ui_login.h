@@ -54,6 +54,7 @@ public:
         user_line = new QLineEdit(groupBox);
         user_line->setObjectName(QStringLiteral("user_line"));
         user_line->setGeometry(QRect(10, 20, 331, 32));
+        user_line->setInputMethodHints(Qt::ImhDialableCharactersOnly|Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhNoPredictiveText|Qt::ImhPreferNumbers);
 
         retranslateUi(LOGIN);
 

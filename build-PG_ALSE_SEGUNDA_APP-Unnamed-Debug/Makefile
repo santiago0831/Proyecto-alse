@@ -54,19 +54,25 @@ SOURCES       = ../PG_ALSE_SEGUNDA_APP/main.cpp \
 		../PG_ALSE_SEGUNDA_APP/start.cpp \
 		../PG_ALSE_SEGUNDA_APP/login.cpp \
 		../PG_ALSE_SEGUNDA_APP/register.cpp \
-		../PG_ALSE_SEGUNDA_APP/datos_p.cpp moc_start.cpp \
+		../PG_ALSE_SEGUNDA_APP/datos_p.cpp \
+		../PG_ALSE_SEGUNDA_APP/gps.cpp \
+		../PG_ALSE_SEGUNDA_APP/sensor.cpp moc_start.cpp \
 		moc_login.cpp \
 		moc_register.cpp \
-		moc_datos_p.cpp
+		moc_datos_p.cpp \
+		moc_gps.cpp
 OBJECTS       = main.o \
 		start.o \
 		login.o \
 		register.o \
 		datos_p.o \
+		gps.o \
+		sensor.o \
 		moc_start.o \
 		moc_login.o \
 		moc_register.o \
-		moc_datos_p.o
+		moc_datos_p.o \
+		moc_gps.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -144,11 +150,15 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../PG_ALSE_SEGUNDA_APP/PG_ALSE_SEGUNDA_APP.pro ../PG_ALSE_SEGUNDA_APP/start.h \
 		../PG_ALSE_SEGUNDA_APP/login.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
-		../PG_ALSE_SEGUNDA_APP/datos_p.h ../PG_ALSE_SEGUNDA_APP/main.cpp \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		../PG_ALSE_SEGUNDA_APP/gps.h \
+		../PG_ALSE_SEGUNDA_APP/sensor.h ../PG_ALSE_SEGUNDA_APP/main.cpp \
 		../PG_ALSE_SEGUNDA_APP/start.cpp \
 		../PG_ALSE_SEGUNDA_APP/login.cpp \
 		../PG_ALSE_SEGUNDA_APP/register.cpp \
-		../PG_ALSE_SEGUNDA_APP/datos_p.cpp
+		../PG_ALSE_SEGUNDA_APP/datos_p.cpp \
+		../PG_ALSE_SEGUNDA_APP/gps.cpp \
+		../PG_ALSE_SEGUNDA_APP/sensor.cpp
 QMAKE_TARGET  = PG_ALSE_SEGUNDA_APP
 DESTDIR       = 
 TARGET        = PG_ALSE_SEGUNDA_APP
@@ -157,7 +167,7 @@ TARGET        = PG_ALSE_SEGUNDA_APP
 first: all
 ####### Build rules
 
-$(TARGET): ui_start.h ui_login.h ui_register.h ui_datos_p.h $(OBJECTS)  
+$(TARGET): ui_start.h ui_login.h ui_register.h ui_datos_p.h ui_gps.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../PG_ALSE_SEGUNDA_APP/PG_ALSE_SEGUNDA_APP.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -334,9 +344,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/start.h ../PG_ALSE_SEGUNDA_APP/login.h ../PG_ALSE_SEGUNDA_APP/register.h ../PG_ALSE_SEGUNDA_APP/datos_p.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/main.cpp ../PG_ALSE_SEGUNDA_APP/start.cpp ../PG_ALSE_SEGUNDA_APP/login.cpp ../PG_ALSE_SEGUNDA_APP/register.cpp ../PG_ALSE_SEGUNDA_APP/datos_p.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/start.ui ../PG_ALSE_SEGUNDA_APP/login.ui ../PG_ALSE_SEGUNDA_APP/register.ui ../PG_ALSE_SEGUNDA_APP/datos_p.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/start.h ../PG_ALSE_SEGUNDA_APP/login.h ../PG_ALSE_SEGUNDA_APP/register.h ../PG_ALSE_SEGUNDA_APP/datos_p.h ../PG_ALSE_SEGUNDA_APP/gps.h ../PG_ALSE_SEGUNDA_APP/sensor.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/main.cpp ../PG_ALSE_SEGUNDA_APP/start.cpp ../PG_ALSE_SEGUNDA_APP/login.cpp ../PG_ALSE_SEGUNDA_APP/register.cpp ../PG_ALSE_SEGUNDA_APP/datos_p.cpp ../PG_ALSE_SEGUNDA_APP/gps.cpp ../PG_ALSE_SEGUNDA_APP/sensor.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../PG_ALSE_SEGUNDA_APP/start.ui ../PG_ALSE_SEGUNDA_APP/login.ui ../PG_ALSE_SEGUNDA_APP/register.ui ../PG_ALSE_SEGUNDA_APP/datos_p.ui ../PG_ALSE_SEGUNDA_APP/gps.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -368,12 +378,14 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_start.cpp moc_login.cpp moc_register.cpp moc_datos_p.cpp
+compiler_moc_header_make_all: moc_start.cpp moc_login.cpp moc_register.cpp moc_datos_p.cpp moc_gps.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_start.cpp moc_login.cpp moc_register.cpp moc_datos_p.cpp
+	-$(DEL_FILE) moc_start.cpp moc_login.cpp moc_register.cpp moc_datos_p.cpp moc_gps.cpp
 moc_start.cpp: ../PG_ALSE_SEGUNDA_APP/login.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
 		../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h \
 		../PG_ALSE_SEGUNDA_APP/start.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -385,21 +397,30 @@ moc_login.cpp: ../PG_ALSE_SEGUNDA_APP/login.h \
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/alse/proyectaso final/PG_ALSE_SEGUNDA_APP' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../PG_ALSE_SEGUNDA_APP/login.h -o moc_login.cpp
 
 moc_register.cpp: ../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/alse/proyectaso final/PG_ALSE_SEGUNDA_APP' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../PG_ALSE_SEGUNDA_APP/register.h -o moc_register.cpp
 
-moc_datos_p.cpp: ../PG_ALSE_SEGUNDA_APP/datos_p.h \
+moc_datos_p.cpp: ../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/alse/proyectaso final/PG_ALSE_SEGUNDA_APP' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../PG_ALSE_SEGUNDA_APP/datos_p.h -o moc_datos_p.cpp
 
+moc_gps.cpp: ../PG_ALSE_SEGUNDA_APP/sensor.h \
+		../PG_ALSE_SEGUNDA_APP/gps.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/alse/proyectaso final/PG_ALSE_SEGUNDA_APP' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../PG_ALSE_SEGUNDA_APP/gps.h -o moc_gps.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_start.h ui_login.h ui_register.h ui_datos_p.h
+compiler_uic_make_all: ui_start.h ui_login.h ui_register.h ui_datos_p.h ui_gps.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_start.h ui_login.h ui_register.h ui_datos_p.h
+	-$(DEL_FILE) ui_start.h ui_login.h ui_register.h ui_datos_p.h ui_gps.h
 ui_start.h: ../PG_ALSE_SEGUNDA_APP/start.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic ../PG_ALSE_SEGUNDA_APP/start.ui -o ui_start.h
@@ -416,6 +437,10 @@ ui_datos_p.h: ../PG_ALSE_SEGUNDA_APP/datos_p.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic ../PG_ALSE_SEGUNDA_APP/datos_p.ui -o ui_datos_p.h
 
+ui_gps.h: ../PG_ALSE_SEGUNDA_APP/gps.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic ../PG_ALSE_SEGUNDA_APP/gps.ui -o ui_gps.h
+
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
@@ -429,13 +454,17 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 main.o: ../PG_ALSE_SEGUNDA_APP/main.cpp ../PG_ALSE_SEGUNDA_APP/start.h \
 		../PG_ALSE_SEGUNDA_APP/login.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
-		../PG_ALSE_SEGUNDA_APP/datos.h
+		../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../PG_ALSE_SEGUNDA_APP/main.cpp
 
 start.o: ../PG_ALSE_SEGUNDA_APP/start.cpp ../PG_ALSE_SEGUNDA_APP/start.h \
 		../PG_ALSE_SEGUNDA_APP/login.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
 		../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h \
 		ui_start.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o start.o ../PG_ALSE_SEGUNDA_APP/start.cpp
 
@@ -443,19 +472,39 @@ login.o: ../PG_ALSE_SEGUNDA_APP/login.cpp ../PG_ALSE_SEGUNDA_APP/login.h \
 		ui_login.h \
 		../PG_ALSE_SEGUNDA_APP/register.h \
 		../PG_ALSE_SEGUNDA_APP/datos.h \
-		ui_register.h
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h \
+		ui_register.h \
+		../PG_ALSE_SEGUNDA_APP/gps.h \
+		../PG_ALSE_SEGUNDA_APP/sensor.h \
+		ui_gps.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o login.o ../PG_ALSE_SEGUNDA_APP/login.cpp
 
 register.o: ../PG_ALSE_SEGUNDA_APP/register.cpp ../PG_ALSE_SEGUNDA_APP/register.h \
 		../PG_ALSE_SEGUNDA_APP/datos.h \
+		../PG_ALSE_SEGUNDA_APP/datos_p.h \
+		ui_datos_p.h \
 		ui_register.h \
 		ui_login.h \
 		../PG_ALSE_SEGUNDA_APP/login.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o register.o ../PG_ALSE_SEGUNDA_APP/register.cpp
 
 datos_p.o: ../PG_ALSE_SEGUNDA_APP/datos_p.cpp ../PG_ALSE_SEGUNDA_APP/datos_p.h \
-		ui_datos_p.h
+		../PG_ALSE_SEGUNDA_APP/datos.h \
+		ui_datos_p.h \
+		../PG_ALSE_SEGUNDA_APP/register.h \
+		ui_register.h \
+		ui_login.h \
+		../PG_ALSE_SEGUNDA_APP/login.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o datos_p.o ../PG_ALSE_SEGUNDA_APP/datos_p.cpp
+
+gps.o: ../PG_ALSE_SEGUNDA_APP/gps.cpp ../PG_ALSE_SEGUNDA_APP/gps.h \
+		../PG_ALSE_SEGUNDA_APP/sensor.h \
+		ui_gps.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gps.o ../PG_ALSE_SEGUNDA_APP/gps.cpp
+
+sensor.o: ../PG_ALSE_SEGUNDA_APP/sensor.cpp ../PG_ALSE_SEGUNDA_APP/sensor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sensor.o ../PG_ALSE_SEGUNDA_APP/sensor.cpp
 
 moc_start.o: moc_start.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_start.o moc_start.cpp
@@ -468,6 +517,9 @@ moc_register.o: moc_register.cpp
 
 moc_datos_p.o: moc_datos_p.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_datos_p.o moc_datos_p.cpp
+
+moc_gps.o: moc_gps.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gps.o moc_gps.cpp
 
 ####### Install
 

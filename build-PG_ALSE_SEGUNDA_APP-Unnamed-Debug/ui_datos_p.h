@@ -44,6 +44,7 @@ public:
     {
         if (datos_p->objectName().isEmpty())
             datos_p->setObjectName(QStringLiteral("datos_p"));
+        datos_p->setWindowModality(Qt::ApplicationModal);
         datos_p->resize(400, 350);
         datos_p->setMinimumSize(QSize(400, 350));
         datos_p->setMaximumSize(QSize(400, 350));
@@ -84,12 +85,15 @@ public:
         day_line = new QLineEdit(datos_p);
         day_line->setObjectName(QStringLiteral("day_line"));
         day_line->setGeometry(QRect(150, 220, 41, 32));
+        day_line->setInputMethodHints(Qt::ImhNone);
         month_line = new QLineEdit(datos_p);
         month_line->setObjectName(QStringLiteral("month_line"));
         month_line->setGeometry(QRect(210, 220, 41, 32));
+        month_line->setInputMethodHints(Qt::ImhNone);
         year_line = new QLineEdit(datos_p);
         year_line->setObjectName(QStringLiteral("year_line"));
         year_line->setGeometry(QRect(270, 220, 61, 32));
+        year_line->setInputMethodHints(Qt::ImhNone);
         boton_validar = new QPushButton(datos_p);
         boton_validar->setObjectName(QStringLiteral("boton_validar"));
         boton_validar->setGeometry(QRect(150, 280, 88, 34));

@@ -8,6 +8,8 @@
 #include "datos_p.h"
 #include "ui_datos_p.h"
 
+
+
 REGISTER::REGISTER(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::REGISTER)

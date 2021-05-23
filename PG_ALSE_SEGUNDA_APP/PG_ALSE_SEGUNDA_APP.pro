@@ -28,16 +28,21 @@ SOURCES += \
         start.cpp \
     login.cpp \
     register.cpp \
-    datos_p.cpp
+    datos_p.cpp \
+    gps.cpp \
+    sensor.cpp
 
 HEADERS += \
         start.h \
     login.h \
     register.h \
-    datos_p.h
+    datos_p.h \
+    gps.h \
+    sensor.h
 
 FORMS += \
         start.ui \
     login.ui \
     register.ui \
-    datos_p.ui
+    datos_p.ui \
+    gps.ui

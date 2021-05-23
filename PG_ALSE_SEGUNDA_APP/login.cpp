@@ -4,8 +4,10 @@
 #include "QDebug"
 #include "register.h"
 #include "ui_register.h"
+#include "gps.h"
+#include "ui_gps.h"
 
-LOGIN::LOGIN(QWidget *parent) :
+LOGIN::LOGIN(QWidget *parent ) :
     QWidget(parent),
     ui(new Ui::LOGIN)
 {
@@ -44,10 +46,15 @@ void LOGIN::on_BOTON_LOGIN2_clicked()
     }
     if(pass==passw)
     {
+        gps * GPS= new gps(0);
+        GPS->show();
         QMessageBox::information(this,tr("Bienvenido"),tr("Bienvenido: %1").arg(nombre));
     }
     else
     {
         QMessageBox::critical(this,tr("ERROR"),tr("Contraseña Incorrecta"));
     }
+
+
+
 }
