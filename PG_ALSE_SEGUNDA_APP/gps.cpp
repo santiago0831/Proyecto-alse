@@ -1,6 +1,9 @@
 #include "gps.h"
 #include "ui_gps.h"
 #include "sensor.h"
+#include "QDebug"
+#include "datos.h"
+#include "QMessageBox"
 #include <chrono>
 #include <ctime>
 #include <sstream>
@@ -12,6 +15,8 @@ gps::gps(QWidget *parent) :
     ui(new Ui::gps)
 {
     ui->setupUi(this);
+    CrearTabla();
+    CrearTabla2();
     _tmr = new QTimer();
     _tmr->setInterval( 50 );
     connect( _tmr, SIGNAL(timeout()), this, SLOT(leerSensores()) );
@@ -39,8 +44,96 @@ gps::~gps()
     delete _tmr;
 }
 
-void gps::actualizarGUI(){
+void gps::CrearTabla()
+{
+    QString consulta;
+    consulta.append("CREATE TABLE IF NOT EXISTS datos_p("
+                    "Hum VARCHAR(10),"
+                    "Preci VARCHAR(10),"
+                    "Vel VARCHAR(10),"
+                    "Dir VARCHAR(10)"
+                    ");");
+    QSqlQuery crear;
+    crear.prepare(consulta);
+    if(crear.exec())
+    {
+        qDebug()<<"Tabla 1 Creada";
+    }else
+    {
+        qDebug()<<"Tabla 1 no creada"<<crear.lastError();
+    }
+}
 
+void gps::CrearTabla2()
+{
+    QString consulta;
+    consulta.append("CREATE TABLE IF NOT EXISTS datos_u("
+                    "Lat VARCHAR(10),"
+                    "Lon VARCHAR(10),"
+                    "Alt VARCHAR(10),"
+                    "Temp VARCHAR(10)"
+                    ");");
+    QSqlQuery crear;
+    crear.prepare(consulta);
+    if(crear.exec())
+    {
+        qDebug()<<"Tabla 2 Creada";
+    }else
+    {
+        qDebug()<<"Tabla 2 no creada"<<crear.lastError();
+    }
+}
+void gps::agregar_datos1(){
+    QSqlQuery insertar_db;
+    QString Lat=ui->txt_Lat->text();
+    QString Lon=ui->txt_Lon->text();
+    QString Alt=ui->txt_Alt->text();
+    QString Vel=ui->txt_Vel->text();
+    QString Dir=ui->txt_Dir->text();
+    QString Temp=ui->txt_Temp->text();
+    QString Hum=ui->txt_Hum->text();
+    QString Preci=ui->txt_Preci->text();
+    qDebug()<<Lat;
+    qDebug()<<Lon;
+    qDebug()<<Alt;
+    qDebug()<<Vel;
+    qDebug()<<Dir;
+    qDebug()<<Temp;
+    qDebug()<<Hum;
+    qDebug()<<Preci;
+    insertar_db.prepare("INSERT INTO datos_p(Hum,Preci,Vel,Dir)"
+                    "VALUES (:Hum,:Preci,:Vel,:Dir)");
+    insertar_db.bindValue(":Hum",Hum);
+    insertar_db.bindValue(":Preci",Preci);
+    insertar_db.bindValue(":Vel",Vel);
+    insertar_db.bindValue(":Dir",Dir);
+    if(insertar_db.exec())
+    {
+            qDebug()<<"Datos ingresados a la tabla";
+    }
+    else
+    {
+        qDebug()<<"Error al ingresar los datos"<<insertar_db.lastError();
+    }
+
+    insertar_db.prepare("INSERT INTO datos_u(Lat,Lon,Alt,Temp)"
+                    "VALUES (:Lat,:Lon,:Alt,:Temp)");
+    insertar_db.bindValue(":Lat",Lat);
+    insertar_db.bindValue(":Lon",Lon);
+    insertar_db.bindValue(":Alt",Alt);
+    insertar_db.bindValue(":Temp",Temp);
+    if(insertar_db.exec())
+    {
+            qDebug()<<"Datos ingresados a la tabla";
+    }
+    else
+    {
+        qDebug()<<"Error al ingresar los datos"<<insertar_db.lastError();
+    }
+}
+
+
+void gps::actualizarGUI(){
 
     ui->txt_Hr->setText( QString::number( _hr ) );
     ui->txt_Min->setText( QString::number( _min ));
@@ -53,15 +146,17 @@ void gps::actualizarGUI(){
     ui->txt_Hum->setText(QString::number( _prom_Preci ) + " %");
     ui->txt_Preci->setText(QString::number( _prom_Preci ) + " mm/día");
 
+
 }
 
-
+int estado;
 void gps::on_Left_Button_clicked()
 {
     if (cont>0){
     cont = cont-1;
     }
     else{}
+    estado=cont;
     estados(cont);
 }
 
@@ -75,8 +170,10 @@ void gps::on_Right_Button_clicked()
     {
     cont = cont-2;
     }
+    estado=cont;
     estados(cont);
 }
+
 
 void gps::estados(int& cont)
 {
@@ -92,6 +189,8 @@ switch(cont){
 
 void gps::leerSensores(){
 
+
+    agregar_datos1();
     // Leer los sensores
     _gps.actualizar();
     _prom_gps[0] += _gps.latitud();

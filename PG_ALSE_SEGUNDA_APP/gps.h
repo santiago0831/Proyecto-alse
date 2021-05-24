@@ -1,10 +1,14 @@
 #ifndef GPS_H
 #define GPS_H
-
+#include "QtSql/QSqlDatabase"
 #include <QWidget>
 #include <QMainWindow>
 #include <QTimer>
 #include "sensor.h"
+#include "QtSql/QSqlDatabase"
+#include "QtSql/qsqlquery.h"
+#include "QtSql/QSqlError"
+#include "QtSql/QSqlQuery"
 //#include "db_local.h"
 #include <string>
 
@@ -21,6 +25,9 @@ public:
     explicit gps(QWidget *parent = 0);
     ~gps();
     void actualizarGUI();
+    void CrearTabla();
+    void CrearTabla2();
+    void agregar_datos1();
 
 
 
@@ -43,7 +50,7 @@ private:
     Sensor      _preci;
     int         _hr, _min, _itera;
     double      _prom_gps[3], _prom_Tem[2], _prom_Viento[2], _prom_Preci;
-//    Db_Local    *_db_local;
+    //Db_Local    *_db_local;
     std::string _fecha;
 };
 
